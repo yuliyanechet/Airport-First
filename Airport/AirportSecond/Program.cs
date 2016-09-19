@@ -20,7 +20,6 @@ namespace AirportSecond
                 Console.WriteLine("3 - edit info (Flight, Price, Passenger)");
                 Console.WriteLine("4 - delete info (Flight, Price, Passenger)");
                 Console.WriteLine("5 - search by");
-                Console.WriteLine("6 - search the nearest flight");
                 Console.WriteLine();
                 //bool noResultFound = true;
                 var choice = Console.ReadLine();
@@ -44,7 +43,7 @@ namespace AirportSecond
                             case "3":
                                 terminal.ShowPassenger();
                                 break;
-                        }                                
+                        }
                         break;
                     case "2":
                         Console.WriteLine("Please choose the action:");
@@ -103,6 +102,22 @@ namespace AirportSecond
                                 break;
                         }
                         break;
+                    case "5":
+                        Console.WriteLine("Please choose the action:");
+                        Console.WriteLine("1 - search by Flight Number");
+                        Console.WriteLine("2 - ");
+                        Console.WriteLine("3 - ");
+                        var searchChoice = Console.ReadLine();
+                        switch (searchChoice)
+                        {
+                            case "1":
+                                terminal.SearchByFlightNumber();
+                                break;
+                            case "2":
+                                terminal.SearchByPrice();
+                                break;
+                        }
+                        break;               
 
                 }
             }

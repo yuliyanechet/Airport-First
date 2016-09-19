@@ -8,7 +8,7 @@ namespace AirportSecond
 {
     class Terminal
     {
-        private List<Flight> arrivals;
+        public List<Flight> arrivals;
         private List<Flight> departures;
         public Prices Price;
         public List<Passenger> passengers;
@@ -76,10 +76,52 @@ namespace AirportSecond
                 output += (line.Status.ToString()).PadRight(15) + "|";
                 Console.WriteLine(output);
             }
-            Console.WriteLine(new string('-', 96));            
+            Console.WriteLine(new string('-', 96));
             Console.WriteLine();
         }
 
+        public void ShowSearchResults(List<Flight> localArrivals, List<Flight> localDepartures)
+        {
+            Console.WriteLine(new string('-', 96));
+            Console.WriteLine("|" + "Date".PadRight(20) + "|" + "Number".PadRight(7) + "|" + "City".PadRight(15) + "|" + "Airline".PadRight(23) + "|" + "Terminal".PadRight(9) + "|" + "Status".PadRight(15) + "|");
+            Console.WriteLine(new string('-', 96));
+            if (localArrivals.Count != 0)
+            {
+                Console.WriteLine("|" + "Arrivals".PadRight(94) + "|");
+                Console.WriteLine(new string('-', 96));
+
+                foreach (var line in localArrivals)
+                {
+                    string output = "|";
+                    output += (line.Date.ToString()).PadRight(20) + "|";
+                    output += (line.Number.ToString()).PadRight(7) + "|";
+                    output += (line.City.ToString()).PadRight(15) + "|";
+                    output += (line.Airline.ToString()).PadRight(23) + "|";
+                    output += (line.Terminal.ToString()).PadRight(9) + "|";
+                    output += (line.Status.ToString()).PadRight(15) + "|";
+                    Console.WriteLine(output);
+                }
+                Console.WriteLine(new string('-', 96));
+            }
+            if (localDepartures.Count != 0)
+            {
+                Console.WriteLine("|" + "Departures".PadRight(94) + "|");
+                Console.WriteLine(new string('-', 96));
+                foreach (var line in localDepartures)
+                {
+                    string output = "|";
+                    output += (line.Date.ToString()).PadRight(20) + "|";
+                    output += (line.Number.ToString()).PadRight(7) + "|";
+                    output += (line.City.ToString()).PadRight(15) + "|";
+                    output += (line.Airline.ToString()).PadRight(23) + "|";
+                    output += (line.Terminal.ToString()).PadRight(9) + "|";
+                    output += (line.Status.ToString()).PadRight(15) + "|";
+                    Console.WriteLine(output);
+                }
+                Console.WriteLine(new string('-', 96));
+                Console.WriteLine();
+            }
+        }
         public void ShowPassenger()
         {
             Console.WriteLine(new string('-', 114));
@@ -307,7 +349,7 @@ namespace AirportSecond
             }
             Console.WriteLine("Please enter new Flight Number or click Enter to skip");
             var flightnumber = Console.ReadLine();
-            if(flightnumber != "")
+            if (flightnumber != "")
             {
                 currentPassenger.FlightNumber = Int32.Parse(flightnumber);
             }
@@ -329,12 +371,12 @@ namespace AirportSecond
             Console.WriteLine("3 - russian");
             Console.WriteLine("4 - ukrainian");
             var nationalityChoice = Console.ReadLine();
-            if (nationalityChoice !="")
+            if (nationalityChoice != "")
             {
                 var nationalityList = new Nationality[] { Nationality.african, Nationality.american, Nationality.russian, Nationality.ukrainian };
                 var nationality = nationalityList[Int32.Parse(nationalityChoice) - 1];
                 currentPassenger.Nationality = nationality;
-            }            
+            }
             Console.WriteLine("Enter Passport Number or click Enter to skip");
             var passport = Console.ReadLine();
             if (passport != "")
@@ -357,7 +399,7 @@ namespace AirportSecond
                 var sex = sexList[Int32.Parse(sexChoice) - 1];
                 currentPassenger.Sex = sex;
 
-            }            
+            }
             Console.WriteLine("Choose Class or click Enter to skip");
             Console.WriteLine("1 - business");
             Console.WriteLine("2 - economy");
@@ -367,7 +409,7 @@ namespace AirportSecond
                 var flightclassList = new FlightClass[] { FlightClass.business, FlightClass.economy };
                 var flightclass = flightclassList[Int32.Parse(flightclassChoice) - 1];
                 currentPassenger.FlightClass = flightclass;
-            }            
+            }
         }
 
         public void DeleteFlight()
@@ -417,7 +459,7 @@ namespace AirportSecond
         public void DeletePassenger()
         {
             Console.WriteLine("Enter Passport Number: ");
-            var editPassportNumber = (Console.ReadLine());  
+            var editPassportNumber = (Console.ReadLine());
             foreach (var item in passengers)
             {
                 if (editPassportNumber == item.Passport)
@@ -427,6 +469,72 @@ namespace AirportSecond
                     break;
                 }
             }
+        }
+
+        public void SearchByFlightNumber()
+        {
+            Console.WriteLine("Enter Flight Number: ");
+            var searchFlightNumber = Convert.ToInt32((Console.ReadLine()));
+            var currentArrivels = new List<Flight>();
+            var currentDepartures = new List<Flight>();
+            bool found = false;
+            foreach (var item in arrivals)
+            {
+                if (searchFlightNumber == item.Number)
+                {
+                    currentArrivels.Add(item);
+                    found = true;
+                    break;
+                }
+            }
+            if (found == false)
+            {
+                foreach (var item in departures)
+                {
+                    if (searchFlightNumber == item.Number)
+                    {
+                        currentDepartures.Add(item);
+                        break;
+                    }
+                }
+            }
+            ShowSearchResults(currentArrivels, currentDepartures);
+        }
+
+        public void SearchByPrice()
+        {
+            Console.WriteLine("Enter Price: ");
+            decimal searchbyPrice = Convert.ToDecimal(Console.ReadLine());
+            var currentArrivels = new List<Flight>();
+            var currentDepartures = new List<Flight>();
+            foreach (var item in Price.PriceList)
+            {
+                if (searchbyPrice == item.Value)
+                {
+                    bool found = false;
+                    foreach (var terminalItem in arrivals)
+                    {
+                        if (terminalItem.Number == item.Key)
+                        {
+                            currentArrivels.Add(terminalItem);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found == false)
+                    {
+                        foreach (var terminalItem in departures)
+                        {
+                            if (terminalItem.Number == item.Key)
+                            {
+                                currentDepartures.Add(terminalItem);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            ShowSearchResults(currentArrivels, currentDepartures);
         }
     }
 }
