@@ -122,27 +122,41 @@ namespace AirportSecond
                 Console.WriteLine();
             }
         }
-        public void ShowPassenger()
+        public void ShowPassenger(Passenger passenger = null)
         {
             Console.WriteLine(new string('-', 114));
             Console.WriteLine("|" + "Race Number".PadRight(10) + "|" + "First Name".PadRight(15) + "|" + "Second Name".PadRight(15) + "|" + "Nationality".PadRight(15) + "|" + "Passport".PadRight(10) + "|" + "BirthDay".PadRight(20) + "|" + "Sex".PadRight(10) + "|" + "Class".PadRight(10) + "|");
             Console.WriteLine(new string('-', 114));
-
-            foreach (var line in passengers)
+            if (passenger == null)
+            {
+                foreach (var line in passengers)
+                {
+                    string output = "|";
+                    output += (line.FlightNumber.ToString()).PadRight(11) + "|";
+                    output += (line.FirstName.PadRight(15)) + "|";
+                    output += (line.SecondName.PadRight(15)) + "|";
+                    output += (line.Nationality.ToString().PadRight(15)) + "|";
+                    output += (line.Passport.PadRight(10)) + "|";
+                    output += (line.BirthDay.ToString().PadRight(20)) + "|";
+                    output += (line.Sex.ToString().PadRight(10)) + "|";
+                    output += (line.FlightClass.ToString().PadRight(10)) + "|";
+                    Console.WriteLine(output);
+                }
+            }
+            else
             {
                 string output = "|";
-                output += (line.FlightNumber.ToString()).PadRight(11) + "|";
-                output += (line.FirstName.PadRight(15)) + "|";
-                output += (line.SecondName.PadRight(15)) + "|";
-                output += (line.Nationality.ToString().PadRight(15)) + "|";
-                output += (line.Passport.PadRight(10)) + "|";
-                output += (line.BirthDay.ToString().PadRight(20)) + "|";
-                output += (line.Sex.ToString().PadRight(10)) + "|";
-                output += (line.FlightClass.ToString().PadRight(10)) + "|";
+                output += (passenger.FlightNumber.ToString()).PadRight(11) + "|";
+                output += (passenger.FirstName.PadRight(15)) + "|";
+                output += (passenger.SecondName.PadRight(15)) + "|";
+                output += (passenger.Nationality.ToString().PadRight(15)) + "|";
+                output += (passenger.Passport.PadRight(10)) + "|";
+                output += (passenger.BirthDay.ToString().PadRight(20)) + "|";
+                output += (passenger.Sex.ToString().PadRight(10)) + "|";
+                output += (passenger.FlightClass.ToString().PadRight(10)) + "|";
                 Console.WriteLine(output);
             }
             Console.WriteLine(new string('-', 114));
-
         }
 
         public void AddArrivalFlight(Flight flight)
@@ -532,6 +546,57 @@ namespace AirportSecond
                             }
                         }
                     }
+                }
+            }
+            ShowSearchResults(currentArrivels, currentDepartures);
+        }
+        public void SearchByFirstLastNames()
+        {
+            Console.WriteLine("Please enter First Name:");
+            string searchFirstName = Console.ReadLine();
+            Console.WriteLine("Please enter Last Name:");
+            string searchLasttName = Console.ReadLine();
+            foreach (var item in passengers)
+            {
+                if (searchFirstName == item.FirstName && searchLasttName == item.SecondName)
+                {
+                    ShowPassenger(item);
+                }
+            }
+        }
+
+        public void SearchByPassport()
+        {
+            Console.WriteLine("Enter Passport Number: ");
+            var searchPassportNumber = (Console.ReadLine());
+            foreach (var item in passengers)
+            {
+                if (searchPassportNumber == item.Passport)
+                {
+                    ShowPassenger(item);
+                }
+            }
+        }
+        public void SearchByCity()
+        {
+            Console.WriteLine("Enter City: ");
+            var searchByCity = Console.ReadLine();
+            var currentArrivels = new List<Flight>();
+            var currentDepartures = new List<Flight>();
+            foreach (var item in arrivals)
+            {
+                if (searchByCity == item.City)
+                {
+                    currentArrivels.Add(item);
+                    break;
+                }
+            }
+            foreach (var item in departures)
+            {
+                if (searchByCity == item.City)
+                {
+                    currentDepartures.Add(item);
+                    break;
                 }
             }
             ShowSearchResults(currentArrivels, currentDepartures);

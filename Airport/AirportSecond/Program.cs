@@ -105,8 +105,10 @@ namespace AirportSecond
                     case "5":
                         Console.WriteLine("Please choose the action:");
                         Console.WriteLine("1 - search by Flight Number");
-                        Console.WriteLine("2 - ");
-                        Console.WriteLine("3 - ");
+                        Console.WriteLine("2 - search by Price");
+                        Console.WriteLine("3 - search by First/Last Name");
+                        Console.WriteLine("4 - search by Passport");
+                        Console.WriteLine("5 - search by City");
                         var searchChoice = Console.ReadLine();
                         switch (searchChoice)
                         {
@@ -115,6 +117,15 @@ namespace AirportSecond
                                 break;
                             case "2":
                                 terminal.SearchByPrice();
+                                break;
+                            case "3":
+                                terminal.SearchByFirstLastNames();
+                                break;
+                            case "4":
+                                terminal.SearchByPassport();
+                                break;
+                            case "5":
+                                terminal.SearchByCity();
                                 break;
                         }
                         break;               
